@@ -1,0 +1,727 @@
+﻿<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<!--
+	HULA HOOPS - Charles Vaughan
+	A simple 5 channel drum machine with pre-loaded sounds.
+	You can change the tempo and direction of the machine, including randomisation steps.
+	Each sound can have it's speed altered, including reverse, as well as level.
+	There is an lfo module for modulating the parameters.
+	Use the toggles to switch on the lfo modulation to the different controls.
+	
+	
+    <!-- In this section we set the positions of each of the objects -->
+	<style>
+	    #drumpad{
+	        position:absolute;
+	        top:55px;
+	        left:20px;
+	    }
+	    div.title{
+	        position:absolute;
+	        font-size:200%;
+	        font: arial, sans-serif;
+	        top:9px;
+	        left:20px;
+	    }
+	    div.subTitle{
+	        position:absolute;
+	        font-size:140%;
+	        font: arial, sans-serif;
+	        top:19px;
+	        left:395px;
+	    }
+	    div.instructions{
+	        position:absolute;
+	        font-size:120%;
+	        font: arial, sans-serif;
+	        text-align: center;
+	        top:650px;
+	        left:18px;
+	        width:800px;
+	    }
+	    
+	    div.tempoLabel{
+	        position:absolute;
+	        font-size:120%;
+	        font: arial, sans-serif;
+	        top:460px;
+	        left:35px;
+	    }
+	    
+	    #tempoDial{
+	        position:absolute;
+	        top:490px;
+	        left:30px;
+	    }
+	    #tempoDialBox{
+	        position:absolute;
+	        top:560px;
+	        left:32px;
+	    }
+	    #tempoLfoToggle {
+	        position:absolute;
+	        top:540px;
+	        left:74px;
+	    }
+	    
+	    div.directionLabel {
+	        position:absolute;
+	        font-size:120%;
+	        font: arial, sans-serif;
+	        top:472px;
+	        left:122px;
+	    }
+	    #directionSelect {
+	        position:absolute;
+	        left:112px;
+	        top:498px;
+	    }
+	    div.directionLabel2 {
+	        position:absolute;
+	        font-size:90%;
+	        font: arial, sans-serif;
+	        top:524px;
+	        left:111px;
+	    }
+	    
+
+        div.kickSpeedLabel {
+	        position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:460px;
+	        left:255px;
+	    }
+        #kickSpeedDial {
+            position:absolute;
+            left:250px;
+            top:500px;
+        }
+        #kickSpeedLfoToggle {
+	        position:absolute;
+	        top:545px;
+	        left:280px;
+	    }
+        div.kickLevelLabel{
+            position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:585px;
+	        left:252px;
+        }
+        #kickLevelSlider{
+            position:absolute;
+            left:248px;
+            top:565px;
+        }
+        
+        div.snareSpeedLabel {
+	        position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:460px;
+	        left:340px;
+	    }
+        #snareSpeedDial {
+            position:absolute;
+            left:335px;
+            top:500px;
+        }
+        #snareSpeedLfoToggle {
+	        position:absolute;
+	        top:545px;
+	        left:365px;
+	    }
+        div.snareLevelLabel{
+            position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:585px;
+	        left:340px;
+        }
+        #snareLevelSlider{
+            position:absolute;
+            left:333px;
+            top:565px;
+        }
+        
+        div.hiHatSpeedLabel {
+	        position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:460px;
+	        left:415px;
+	    }
+        #hiHatSpeedDial {
+            position:absolute;
+            left:415px;
+            top:500px;
+        }
+        #hiHatSpeedLfoToggle {
+	        position:absolute;
+	        top:545px;
+	        left:445px;
+	    }
+        div.hiHatLevelLabel{
+            position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:585px;
+	        left:420px;
+        }
+        #hiHatLevelSlider{
+            position:absolute;
+            left:415px;
+            top:565px;
+        }
+        
+        div.fx1SpeedLabel {
+	        position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:460px;
+	        left:500px;
+	    }
+	    #fx1SpeedLfoToggle {
+	        position:absolute;
+	        top:545px;
+	        left:530px;
+	    }
+        #fx1SpeedDial {
+            position:absolute;
+            left:495px;
+            top:500px;
+        }
+        div.fx1LevelLabel{
+            position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:585px;
+	        left:500px;
+        }
+        #fx1LevelSlider{
+            position:absolute;
+            left:495px;
+            top:565px;
+        }
+        
+        div.fx2SpeedLabel {
+	        position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:460px;
+	        left:580px;
+	    }
+        #fx2SpeedDial {
+            position:absolute;
+            left:575px;
+            top:500px;
+        }
+        #fx2SpeedLfoToggle {
+	        position:absolute;
+	        top:545px;
+	        left:605px;
+	    }
+        div.fx2LevelLabel{
+            position:absolute;
+	        font-size:100%;
+	        font: arial, sans-serif;
+	        top:585px;
+	        left:580px;
+        }
+        #fx2LevelSlider{
+            position:absolute;
+            left:575px;
+            top:565px;
+        }
+        
+        div.lfoLabel {
+            position:absolute;
+	        font-size:110%;
+	        font: arial, sans-serif;
+	        top:460px;
+	        left:755px;
+	    }
+        div.lfoSpeedLabel {
+	        position:absolute;
+	        font-size:90%;
+	        font: arial, sans-serif;
+	        top:480px;
+	        left:730px;
+	    }
+        #lfoSpeedDial {
+            position:absolute;
+            left:730px;
+            top:500px;
+        }
+        div.lfoSizeLabel{
+            position:absolute;
+	        font-size:90%;
+	        font: arial, sans-serif;
+	        top:479px;
+	        left:780px;
+        }
+        #lfoSizeDial{
+            position:absolute;
+            left:775px;
+            top:500px;
+        }
+	
+	    
+	</style>
+</head>  
+
+<body>  
+    <!-- Here we set the ids for the objects and the texts -->
+    
+    <div id="drumpad"></div>
+    <div id="tempoDial"></div>
+    <div id="tempoLfoToggle"></div>
+    <div id="tempoDialBox"></div>
+    <div id="directionSelect"></div>
+    <div id="kickSpeedDial"></div>
+    <div id="kickSpeedLfoToggle"></div>
+    <div id="kickLevelSlider"></div>
+    <div id="snareSpeedDial"></div>
+    <div id="snareLevelSlider"></div>
+    <div id="snareSpeedLfoToggle"></div>
+    <div id="hiHatSpeedDial"></div>
+    <div id="hiHatSpeedLfoToggle"></div>
+    <div id="hiHatLevelSlider"></div>
+    <div id="fx1SpeedDial"></div>
+    <div id="fx1SpeedLfoToggle"></div>
+    <div id="fx1LevelSlider"></div>
+    <div id="fx2SpeedDial"></div>
+    <div id="fx2SpeedLfoToggle"></div>
+    <div id="fx2LevelSlider"></div>
+    <div id="lfoSpeedDial"></div>
+    <div id="lfoSizeDial"></div>
+    
+    <div class="title"> h u l a _ h o o p s </div>
+    <div class="subTitle"> a _ s i m p l e _ 5 _ c h _ d r u m _ m a c h i n e</div>
+    <div class="tempoLabel"> Tempo </div>
+    <div class="directionLabel"> Direction </div>
+    <div class="directionLabel2"> Bck &nbsp; Rand &nbsp; Fwd </div>
+    <div class="kickSpeedLabel"> &nbsp;Kick <br /> Speed </div>
+    <div class="kickLevelLabel"> Level </div>
+    <div class="snareSpeedLabel"> Snare <br /> Speed</div>
+    <div class="snareLevelLabel"> Level </div>
+    <div class="hiHatSpeedLabel"> Hi Hat <br /> Speed</div>
+    <div class="hiHatLevelLabel"> Level </div>
+    <div class="fx1SpeedLabel"> &nbsp;FX1 <br /> Speed </div>
+    <div class="fx1LevelLabel"> Level </div>
+    <div class="fx2SpeedLabel"> &nbsp;FX2 <br /> Speed </div>
+    <div class="fx2LevelLabel"> Level </div>
+    <div class="lfoLabel"> LFO </div>
+    <div class="lfoSpeedLabel"> Speed </div>
+    <div class="lfoSizeLabel"> Size </div>
+    <div class="mainControlPanel"></div>
+    
+    <div class="instructions"> 
+    h u l a _ h o o p s - c h a r l e s _ v a u g h a n <br />
+    A simple 5 channel drum machine with pre-loaded sounds.
+	You can change the tempo and direction of the machine, including randomisation steps.
+	Each sound can have it's speed altered, including reverse, as well as level.
+	There is an lfo module for modulating the parameters.
+	Use the toggles to switch on the lfo modulation to the different controls.
+    </div>
+    
+    <!--This loads in the Nexus 2 UI -->
+    <script src="js/NexusUI.js"></script>
+    <script src="js/p5.js"></script>
+    <script src="js/_maxiLib.js"></script>
+    <script src="js/main.js"></script>
+</body>
+<script>
+
+    //These variables are setup for controlling the direction of the machine
+    var direction = 2;
+    var directionLfo = false;
+    //This creates the interface controls and updates the variable when changed
+    var directionSelect = new window.Nexus.RadioButton('#directionSelect', {
+        'size':[100,25],
+        'numberOfButtons': 3,
+        'active': 2,
+    });
+    directionSelect.on('change', function(val) {
+        if (val >= 0) {
+                direction = val;
+            } else {
+                directionSelect.select(direction);
+            }
+    });
+	
+	
+	//This creates our maxi audio driver and initialises it
+	var maxiAudio = new maximJs.maxiAudio();
+	maxiAudio.init();
+	
+	
+	//This is the master clock variables used for ticking over the steps
+	var clock = new maximJs.maxiClock();
+	clock.setTicksPerBeat(2);
+	var masterTempo = 120;
+	var playHead = -1;
+	var tempoLfo = false;
+	var playOn = false;
+	
+	//This creates the interface controls and updates the variables when changed
+	var tempoDial = new window.Nexus.Dial('#tempoDial', {
+	    'size':[60,60],
+	    'min':60,
+	    'max':200,
+	    'value':120
+	});
+	tempoDial.on('change', function(val) {
+	    masterTempo = parseInt(val);
+	});
+	var tempoDialBox = new window.Nexus.Number('#tempoDialBox', {
+	});
+	tempoDialBox.link(tempoDial);
+	var tempoLfoToggle = new window.Nexus.Toggle('#tempoLfoToggle', {
+	    'size':[20,20],
+	});
+	tempoLfoToggle.on('change', function(val) {
+	    tempoLfo = val;
+	});
+	
+	
+	//These are the audio outputs for each of the channe;s
+	var kickOut;
+	var snareOut;
+	var hiHatOut;
+	var fx1Out;
+	var fx2Out;
+	
+	
+	//These are the variables for the kick sound
+	var kick = new maximJs.maxiSample();
+    maxiAudio.loadSample('samples/kick.WAV', kick);
+    var kickSpeed = 1;
+	var kickLevel = 0.5;
+	var kickSpeedLfo = false;
+	
+	//This creates the interface controls and updates the variables when changed
+	var kickSpeedDial = new window.Nexus.Dial('#kickSpeedDial', {
+	    'size':[50,50],
+	    'min': -3,
+	    'max': 5,
+	    'value': 1
+	});
+	kickSpeedDial.on('change', function(val) {
+	   kickSpeed = val;
+	});
+	var kickSpeedLfoToggle = new window.Nexus.Toggle('#kickSpeedLfoToggle', {
+	    'size':[20,20],
+	});
+	kickSpeedLfoToggle.on('change', function(val) {
+	    kickSpeedLfo = val;
+	});
+	var kickLevelSlider = new window.Nexus.Slider('#kickLevelSlider', {
+	    'size':[50,20],
+	    'min': 0,
+	    'max': 1,
+	    'value': 0.5
+	});
+	kickLevelSlider.on('change', function(val) {
+	   kickLevel = val;
+	});
+	
+	
+	//These are the varibales for the snare sound
+    var snare = new maximJs.maxiSample();
+    maxiAudio.loadSample('samples/snare.WAV', snare);
+	var snareSpeed = 1;
+	var snareLevel = 0.5;
+	var snareSpeedLfo = false;
+	
+	//This creates the interface controls and updates the variables when changed
+	var snareSpeedDial = new window.Nexus.Dial('#snareSpeedDial', {
+	    'size':[50,50],
+	    'min': -3,
+	    'max': 5,
+	    'value': 1
+	});
+	snareSpeedDial.on('change', function(val) {
+	   snareSpeed = val;
+	});
+	var snareLevelSlider = new window.Nexus.Slider('#snareLevelSlider', {
+	    'size':[50,20],
+	    'min': 0,
+	    'max': 1,
+	    'value': 0.5
+	});
+	snareLevelSlider.on('change', function(val) {
+	   snareLevel = val;
+	});
+	var snareSpeedLfoToggle = new window.Nexus.Toggle('#snareSpeedLfoToggle', {
+	    'size':[20,20],
+	});
+	snareSpeedLfoToggle.on('change', function(val) {
+	    snareSpeedLfo = val;
+	});
+	
+	
+	//These are the varibales for the hi hat sound
+    var hiHat = new maximJs.maxiSample();
+    maxiAudio.loadSample('samples/hat.WAV', hiHat);
+	var hiHatSpeed = 1;
+	var hiHatLevel = 0.5;
+	var hiHatSpeedLfo = false;
+	
+	//This creates the interface controls and updates the variables when changed
+	var hiHatSpeedDial = new window.Nexus.Dial('#hiHatSpeedDial', {
+	    'size':[50,50],
+	    'min': -3,
+	    'max': 5,
+	    'value': 1
+	});
+	hiHatSpeedDial.on('change', function(val) {
+	   hiHatSpeed = val;
+	});
+    var hiHatSpeedLfoToggle = new window.Nexus.Toggle('#hiHatSpeedLfoToggle', {
+	    'size':[20,20],
+	});
+	hiHatSpeedLfoToggle.on('change', function(val) {
+	    hiHatSpeedLfo = val;
+	});
+	var hiHatLevelSlider = new window.Nexus.Slider('#hiHatLevelSlider', {
+	    'size':[50,20],
+	    'min': 0,
+	    'max': 1,
+	    'value': 0.5
+	});
+	hiHatLevelSlider.on('change', function(val) {
+	   hiHatLevel = val;
+	});
+	
+	
+	//These are the variables for the fx1 sound
+    var fx1 = new maximJs.maxiSample();
+    maxiAudio.loadSample('samples/fx1.wav', fx1);
+	var fx1Speed = 1;
+	var fx1Level = 0.5;
+	var fx1SpeedLfo = false;
+	
+	//This creates the interface controls and updates the variables when changed
+	var fx1SpeedDial = new window.Nexus.Dial('#fx1SpeedDial', {
+	    'size':[50,50],
+	    'min': -3,
+	    'max': 5,
+	    'value': 1
+	});
+	fx1SpeedDial.on('change', function(val) {
+	   fx1Speed = val;
+	});
+	var fx1SpeedLfoToggle = new window.Nexus.Toggle('#fx1SpeedLfoToggle', {
+	    'size':[20,20],
+	});
+	fx1SpeedLfoToggle.on('change', function(val) {
+	    fx1SpeedLfo = val;
+	});
+	var fx1LevelSlider = new window.Nexus.Slider('#fx1LevelSlider', {
+	    'size':[50,20],
+	    'min': 0,
+	    'max': 1,
+	    'value': 0.5
+	});
+	fx1LevelSlider.on('change', function(val) {
+	   fx1Level = val;
+	});
+	
+	
+	//These are the variables for the fx2 sound
+    var fx2 = new maximJs.maxiSample();
+    maxiAudio.loadSample('samples/fx2.wav', fx2);
+	var fx2Speed = 1;
+	var fx2Level = 0.5;
+	var fx2SpeedLfo = false;
+	
+	//This creates the interface controls and updates the variables when changed
+	var fx2SpeedDial = new window.Nexus.Dial('#fx2SpeedDial', {
+	    'size':[50,50],
+	    'min': -3,
+	    'max': 5,
+	    'value': 1
+	});
+	fx2SpeedDial.on('change', function(val) {
+	   fx2Speed = val;
+	});
+	var fx2SpeedLfoToggle = new window.Nexus.Toggle('#fx2SpeedLfoToggle', {
+	    'size':[20,20],
+	});
+	fx2SpeedLfoToggle.on('change', function(val) {
+	    fx2SpeedLfo = val;
+	});
+	var fx2LevelSlider = new window.Nexus.Slider('#fx2LevelSlider', {
+	    'size':[50,20],
+	    'min': 0,
+	    'max': 1,
+	    'value': 0.5
+	});
+	fx2LevelSlider.on('change', function(val) {
+	   fx2Level = val;
+	});
+	
+	
+	//This is the matrix for controlling which steps are on and off for each channel
+	var sequenceMatrix = [
+	           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	            ];
+	//This creates the drumpad sequencer which is automatically loaded to the size of our array matrix
+	var drumpad = new window.Nexus.Sequencer('#drumpad', {
+	    'size': [800,400],
+	    'rows': sequenceMatrix.length,
+	    'columns': sequenceMatrix[0].length,
+	});
+	//The correct array value is selected and updated when the drumpad changes
+    drumpad.on('change', function(val) {
+            sequenceMatrix[val.row][val.column] = val.state;
+        });
+        
+    
+    //These are the variables for the LFO unit
+    var lfo = new maximJs.maxiOsc();
+    var lfoOut;
+    var lfoSpeed = 1;
+    var lfoSize = 1;
+    
+    //This creates the interface controls and updates the variables when changed
+    var lfoSpeedDial = new window.Nexus.Dial('#lfoSpeedDial', {
+	    'size':[40,40],
+	    'min': 0.1,
+	    'max': 3,
+	    'value': 1
+	});
+	lfoSpeedDial.on('change', function(val) {
+	   lfoSpeed = val;
+	});
+	var lfoSizeDial = new window.Nexus.Dial('#lfoSizeDial', {
+	    'size':[40,40],
+	    'min': 1,
+	    'max': 20,
+	    'value': 1
+	});
+	lfoSizeDial.on('change', function(val) {
+	   lfoSize = val;
+	});
+    
+    
+	//This is our main audio function
+	maxiAudio.play = function() {
+	    //This creates the lfo and scales it between 0 and 1 and then scales that according to the size
+	    lfoOut = ((lfo.sinewave(lfoSpeed) + 1) /2) * lfoSize;
+	    
+	    //If the tempo LFO toggle is on, the tempo is varied by the LFO
+	    if(tempoLfo) {
+	        masterTempo = parseInt(tempoDial.value * (lfoOut/lfoSize));
+	        clock.setTempo(masterTempo);
+	    } else {
+	        masterTempo = tempoDial.value;
+	    }
+	   
+	   
+	    //This makes the clock tick and updates the tempo
+	    clock.ticker();
+	    clock.setTempo(masterTempo);
+	    
+	    
+	    //This triggers everytime the clock ticks
+	    if(clock.tick) {
+	        playOn = true; //This means the sound won't output until the drum machine starts running
+	        drumpad.next(); //This moves forward the drum machine step
+	        
+	        if(direction == 2) { //If the fwd direction is selected, the playHead counts upwards until it reaches the max, then resets
+	            playHead++;
+	            if(playHead == 16) {
+	                playHead = 0;
+	            }
+	        }
+	        
+	        if(direction === 0) { //If the bck direction is selected, the playhead counts down until it reaches the min, then resets
+	            playHead--;
+	            if(playHead <= 0) {
+	                playHead = 16;
+	            }
+	        }
+	        
+	        if(direction == 1) { //If the random direction is selected, the playehead randomly picks a step each time
+	            playHead = parseInt(getRandom(-1,14));
+	        }
+	        
+	        drumpad.stepper.value = playHead % 16; //This sets the position of the sequencer step according to the playhead
+	        
+	        
+	        //These check to see if the current channel step has been switched on, and if so it triggers the correlating sound
+	        if(sequenceMatrix[4] [playHead % sequenceMatrix[4].length]){
+	            kick.trigger();
+	        }
+	    
+	        if(sequenceMatrix[3] [playHead % sequenceMatrix[3].length]){
+	            snare.trigger();
+	         }
+	    
+	        if(sequenceMatrix[2] [playHead % sequenceMatrix[2].length]){
+	            hiHat.trigger();
+	        }
+	    
+	        if(sequenceMatrix[1] [playHead % sequenceMatrix[1].length]){
+	            fx1.trigger();
+	        }
+	    
+	        if(sequenceMatrix[0] [playHead % sequenceMatrix[0].length]){
+	            fx2.trigger();
+	        }
+	    
+	    }
+	    
+	    
+	    //These output the sounds to the channel outs
+	    //If the lfo toggle is on, the speed is modulated from the lfo output
+	    if(kickSpeedLfo) {
+	        kickOut = kick.playOnce(kickSpeed * lfoOut) * kickLevel;
+	    } else {
+	        kickOut = kick.playOnce(kickSpeed) * kickLevel;
+	    }
+	    
+	    if(snareSpeedLfo) {
+	        snareOut = snare.playOnce(snareSpeed * lfoOut) * snareLevel;
+	    } else {
+	        snareOut = snare.playOnce(snareSpeed) * snareLevel;
+	    }
+	    
+	    if(hiHatSpeedLfo) {
+	        hiHatOut = hiHat.playOnce(hiHatSpeed * lfoOut) * hiHatLevel;
+	    } else {
+	        hiHatOut = hiHat.playOnce(hiHatSpeed) * hiHatLevel;
+	    }
+	    
+	    if(fx1SpeedLfo) {
+	        fx1Out = fx1.playOnce(fx1Speed * lfoOut) * fx1Level;
+	    } else {
+	        fx1Out = fx1.playOnce(fx1Speed) * fx1Level;
+	    }
+	    
+	    if(fx2SpeedLfo) {
+	        fx2Out = fx2.playOnce(fx2Speed * lfoOut) * fx2Level;
+	    } else {
+	        fx2Out = fx2.playOnce(fx2Speed) * fx2Level;
+	    }
+
+        //If the drum machine has engaged, the sound outputs
+        if(playOn) {
+	        this.output = kickOut + snareOut + hiHatOut + fx1Out + fx2Out;
+        }
+	};
+	
+//A simple minimum maximum random function
+function getRandom(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+</script>
